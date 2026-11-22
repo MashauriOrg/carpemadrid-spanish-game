@@ -23,7 +23,7 @@ async function saveAssessment(){
   const status=document.getElementById('saveStatus');
   const name=document.getElementById('studentName').value.trim();
   const email=document.getElementById('studentEmail').value.trim();
-  if(!name || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){status.textContent='Please enter your name and a valid email address.';return}
+  if(!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){status.textContent='Please enter your name and a valid email address.';return}
   if(!document.getElementById('studentConsent').checked){status.textContent='Please confirm your consent before saving.';return}
   if(!lastSubmissionId) lastSubmissionId=(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2);
   const b1=totalB1?Math.round(100*correctB1/totalB1):0,b2=totalB2?Math.round(100*correctB2/totalB2):0;
