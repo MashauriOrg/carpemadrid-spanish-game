@@ -33,3 +33,23 @@ Consequently, Virginia can only retrieve results that students actually send to 
 With Carpe Madrid's agreement, implement a consent-based submission flow to a protected endpoint (for example, a Google Apps Script web app writing to a restricted Google Sheet). Capture assessment version, timestamp, student identifier/contact details if needed, B1/B2 category percentages, indicative level, recommendation score and comments. Show a clear success/error message after submission, prevent duplicate entries and apply appropriate GDPR privacy notice, access control and retention rules. **Do not put private API credentials in this public repository or publish student data to GitHub.**
 
 Until such a workflow is implemented and tested, tell students explicitly that they must send the report themselves.
+
+
+## Google Sheets collection setup (prepared, not yet live)
+
+A restricted results workbook has been created in the CarpeMadrid Google Drive folder:
+https://docs.google.com/spreadsheets/d/1iw0iIDSsbS22cfnzKh18e-yZgCCrT9h5NInZpBQOVas/edit
+
+The `Submissions` tab has columns for both assessment versions, learner identity, scores, NPS, comments, consent and duplicate-submission ID.
+
+The server-side Google Apps Script source is at `google-apps-script/Code.gs`. It has **not been deployed**, and the existing game still uses manual email/WhatsApp sharing. Do not tell students that results are automatically recorded yet.
+
+### To activate
+
+1. In the Google account authorised to edit the results workbook, open **Extensions > Apps Script**.
+2. Paste the contents of `google-apps-script/Code.gs` into `Code.gs` and save.
+3. Deploy as a Web App, executing as the owner. Review carefully who can access the endpoint, because a public endpoint can receive unsolicited submissions. Configure access controls, anti-spam protection and GDPR privacy/retention policy before using real learner information.
+4. Copy the deployment URL into the game frontend integration (still to be completed). Implement a learner name/email and consent form, send a JSON payload and display confirmed success or actionable failure. Test using a dummy learner and verify the corresponding Sheet row before launching.
+5. Locate the separate B2/C1 game's source and integrate/test it independently.
+
+**Note:** Cross-origin browser requests to Apps Script require careful testing. A JSON response from `ContentService` is not automatically accessible via CORS from every static hosting origin. Do not assume that deployment alone makes browser submission work.
